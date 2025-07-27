@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+    
+    <!-- Main Interface -->
+    <AdvRem_ModName>Advanced Reminders</AdvRem_ModName>
+    <AdvRem_ModDescription>Comprehensive reminder and task management system</AdvRem_ModDescription>
+    
+    <!-- Reminder Creation -->
+    <AdvRem_CreateReminderTitle>Create New Reminder</AdvRem_CreateReminderTitle>
+    <AdvRem_ReminderTitle>Title</AdvRem_ReminderTitle>
+    <AdvRem_ReminderDescription>Description</AdvRem_ReminderDescription>
+    
+    <!-- Quest Integration -->
+    <AdvRem_QuestDeadlineWarning>Quest "{0}" expires in {1}</AdvRem_QuestDeadlineWarning>
+    <AdvRem_QuestPreparation>Quest Preparation</AdvRem_QuestPreparation>
+    
+    <!-- Time System -->
+    <AdvRem_QuadrumAprimay>Aprimay</AdvRem_QuadrumAprimay>
+    <AdvRem_QuadrumJugust>Jugust</AdvRem_QuadrumJugust>
+    <AdvRem_QuadrumSeptober>Septober</AdvRem_QuadrumSeptober>
+    <AdvRem_QuadrumDecembary>Decembary</AdvRem_QuadrumDecembary>
+    
+    <!-- Messages -->
+    <AdvRem_ReminderCreated>Reminder "{0}" created</AdvRem_ReminderCreated>
+    <AdvRem_ReminderTriggered>Reminder: {0}</AdvRem_ReminderTriggered>
+    
+</LanguageData>

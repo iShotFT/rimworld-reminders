@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <AssemblyName>AdvancedReminders</AssemblyName>
+    <RootNamespace>AdvancedReminders</RootNamespace>
+    <OutputPath>..\..\Assemblies\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <LangVersion>latest</LangVersion>
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <Optimize>false</Optimize>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <Optimize>true</Optimize>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+
+  <!-- RimWorld Installation Paths -->
+  <PropertyGroup>
+    <RimWorldInstallDir>C:\Program Files (x86)\Steam\steamapps\common\RimWorld</RimWorldInstallDir>
+    <RimWorldManagedDir>$(RimWorldInstallDir)\RimWorldWin64_Data\Managed</RimWorldManagedDir>
+    <RimWorldModsDir>$(RimWorldInstallDir)\Mods</RimWorldModsDir>
+    <GameSourceDir>..\..\..\_GameSource</GameSourceDir>
+  </PropertyGroup>
+
+  <!-- Core RimWorld References -->
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldManagedDir)\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Assembly-CSharp-firstpass">
+      <HintPath>$(RimWorldManagedDir)\Assembly-CSharp-firstpass.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+
+  <!-- Unity Engine References -->
+  <ItemGroup>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(RimWorldManagedDir)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>$(RimWorldManagedDir)\UnityEngine.IMGUIModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>$(RimWorldManagedDir)\UnityEngine.TextRenderingModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.AudioModule">
+      <HintPath>$(RimWorldManagedDir)\UnityEngine.AudioModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.AssetBundleModule">
+      <HintPath>$(RimWorldManagedDir)\UnityEngine.AssetBundleModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+
+  <!-- Mod Dependencies -->
+  <ItemGroup>
+    <Reference Include="HugsLib">
+      <HintPath>$(RimWorldModsDir)\HugsLib\Assemblies\HugsLib.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(RimWorldModsDir)\HarmonyMod\Current\Assemblies\0Harmony.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+
+  <!-- System References -->
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+
+  <!-- Enable default compile items -->
+  <PropertyGroup>
+    <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <!-- Deploy mod to RimWorld Mods directory after successful build -->
+  <Target Name="DeployToRimWorld" AfterTargets="Build" Condition="Exists('$(RimWorldModsDir)')">
+    <PropertyGroup>
+      <ModDeployDir>$(RimWorldModsDir)\AdvancedReminders</ModDeployDir>
+    </PropertyGroup>
+    
+    <!-- Create mod directory structure -->
+    <MakeDir Directories="$(ModDeployDir)" Condition="!Exists('$(ModDeployDir)')" />
+    <MakeDir Directories="$(ModDeployDir)\Assemblies" Condition="!Exists('$(ModDeployDir)\Assemblies')" />
+    <MakeDir Directories="$(ModDeployDir)\About" Condition="!Exists('$(ModDeployDir)\About')" />
+    <MakeDir Directories="$(ModDeployDir)\Languages" Condition="!Exists('$(ModDeployDir)\Languages')" />
+    <MakeDir Directories="$(ModDeployDir)\Defs" Condition="!Exists('$(ModDeployDir)\Defs')" />
+    
+    <!-- Copy built assembly -->
+    <Copy SourceFiles="$(OutputPath)AdvancedReminders.dll" DestinationFolder="$(ModDeployDir)\Assemblies" />
+    <Copy SourceFiles="$(OutputPath)AdvancedReminders.pdb" DestinationFolder="$(ModDeployDir)\Assemblies" Condition="Exists('$(OutputPath)AdvancedReminders.pdb')" />
+    
+    <!-- Copy mod content -->
+    <ItemGroup>
+      <AboutFiles Include="..\..\About\**\*" />
+      <LanguageFiles Include="..\..\Languages\**\*" />
+      <DefsFiles Include="..\..\Defs\**\*" />
+      <LoadFoldersFile Include="..\..\loadFolders.xml" />
+    </ItemGroup>
+    
+    <Copy SourceFiles="@(AboutFiles)" DestinationFiles="@(AboutFiles->'$(ModDeployDir)\About\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(LanguageFiles)" DestinationFiles="@(LanguageFiles->'$(ModDeployDir)\Languages\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(DefsFiles)" DestinationFiles="@(DefsFiles->'$(ModDeployDir)\Defs\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(LoadFoldersFile)" DestinationFiles="@(LoadFoldersFile->'$(ModDeployDir)\%(Filename)%(Extension)')" />
+    
+    <Message Text="Mod deployed to: $(ModDeployDir)" Importance="high" />
+  </Target>
+  
+  <!-- Clean deployed mod -->
+  <Target Name="CleanDeployment" BeforeTargets="Clean" Condition="Exists('$(RimWorldModsDir)\AdvancedReminders')">
+    <RemoveDir Directories="$(RimWorldModsDir)\AdvancedReminders" />
+    <Message Text="Cleaned deployed mod from RimWorld directory" Importance="high" />
+  </Target>
+
+</Project>
