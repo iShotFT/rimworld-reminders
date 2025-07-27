@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    
+    <!-- Key Binding Category for Advanced Reminders -->
+    <KeyBindingCategoryDef>
+        <defName>AdvancedReminders</defName>
+        <label>Advanced Reminders</label>
+        <description>Hotkeys for the Advanced Reminders mod</description>
+    </KeyBindingCategoryDef>
+    
+    <!-- Create Reminder Hotkey -->
+    <KeyBindingDef>
+        <defName>AdvRem_CreateReminder</defName>
+        <category>AdvancedReminders</category>
+        <defaultKeyCodeA>Y</defaultKeyCodeA>
+        <label>Create Reminder</label>
+        <description>Opens the create reminder dialog</description>
+    </KeyBindingDef>
+    
+    <!-- Open Reminders Tab Hotkey -->
+    <KeyBindingDef>
+        <defName>AdvRem_OpenRemindersTab</defName>
+        <category>AdvancedReminders</category>
+        <defaultKeyCodeA>R</defaultKeyCodeA>
+        <label>Open Reminders Tab</label>
+        <description>Opens the main reminders management tab</description>
+    </KeyBindingDef>
+    
+    <!-- Quick Test Reminder (Dev Mode Only) -->
+    <KeyBindingDef>
+        <defName>AdvRem_CreateTestReminder</defName>
+        <category>AdvancedReminders</category>
+        <defaultKeyCodeA>LeftControl</defaultKeyCodeA>
+        <defaultKeyCodeB>T</defaultKeyCodeB>
+        <label>Create Test Reminder (Dev)</label>
+        <description>Creates a test reminder for debugging (dev mode only)</description>
+    </KeyBindingDef>
+    
+</Defs>

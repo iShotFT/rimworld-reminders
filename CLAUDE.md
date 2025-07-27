@@ -2,6 +2,8 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+:warning: IMPORTANT! Always read and use the GOLDEN-RULES.md file, these rules are to be applied ALWAYS
+
 ## Project Overview
 
 This is a RimWorld mod project for an advanced reminder and task management system. The mod integrates deeply with RimWorld's game systems to provide context-aware reminders, quest tracking, and intelligent scheduling.

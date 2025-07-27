@@ -76,10 +76,11 @@ Icon?
 
 ## Project Specific
 # Development planning files (keep in repo but list here for reference)
-# CLAUDE.md
-# PROJECT-NAME-IDEAS.md  
-# PROJECT-PLAN.md
-# PLAN-OF-ATTACK.md
+CLAUDE.md
+PROJECT-NAME-IDEAS.md  
+PROJECT-PLAN.md
+PLAN-OF-ATTACK.md
+GOLDEN-RULES.md
 
 # Claude.ai working files
 .claude/

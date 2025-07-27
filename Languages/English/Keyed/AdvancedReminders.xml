@@ -4,24 +4,134 @@
     <!-- Main Interface -->
     <AdvRem_ModName>Advanced Reminders</AdvRem_ModName>
     <AdvRem_ModDescription>Comprehensive reminder and task management system</AdvRem_ModDescription>
+    <AdvRem_MainTabTitle>Reminders</AdvRem_MainTabTitle>
+    <AdvRem_MainTabDescription>Manage your reminders and tasks</AdvRem_MainTabDescription>
     
-    <!-- Reminder Creation -->
+    <!-- Reminder Management -->
     <AdvRem_CreateReminderTitle>Create New Reminder</AdvRem_CreateReminderTitle>
+    <AdvRem_EditReminderTitle>Edit Reminder</AdvRem_EditReminderTitle>
     <AdvRem_ReminderTitle>Title</AdvRem_ReminderTitle>
     <AdvRem_ReminderDescription>Description</AdvRem_ReminderDescription>
+    <AdvRem_ReminderSeverity>Severity</AdvRem_ReminderSeverity>
+    <AdvRem_ReminderTrigger>Trigger</AdvRem_ReminderTrigger>
+    <AdvRem_ReminderActions>Actions</AdvRem_ReminderActions>
+    <AdvRem_IsRepeating>Repeating</AdvRem_IsRepeating>
+    <AdvRem_IsActive>Active</AdvRem_IsActive>
+    
+    <!-- Severity Levels -->
+    <AdvRem_SeverityLow>Low</AdvRem_SeverityLow>
+    <AdvRem_SeverityMedium>Medium</AdvRem_SeverityMedium>
+    <AdvRem_SeverityHigh>High</AdvRem_SeverityHigh>
+    <AdvRem_SeverityCritical>Critical</AdvRem_SeverityCritical>
+    <AdvRem_SeverityUrgent>Urgent</AdvRem_SeverityUrgent>
+    
+    <!-- Trigger Types -->
+    <AdvRem_TriggerTypeTime>Time-based</AdvRem_TriggerTypeTime>
+    <AdvRem_TriggerTypeEvent>Event-based</AdvRem_TriggerTypeEvent>
+    <AdvRem_TriggerTypeResource>Resource-based</AdvRem_TriggerTypeResource>
+    <AdvRem_TriggerTypePawn>Pawn-based</AdvRem_TriggerTypePawn>
+    <AdvRem_TriggerTypeQuest>Quest-based</AdvRem_TriggerTypeQuest>
+    <AdvRem_TriggerTypeCalendar>Calendar-based</AdvRem_TriggerTypeCalendar>
+    <AdvRem_TriggerTypeCondition>Condition-based</AdvRem_TriggerTypeCondition>
+    
+    <!-- Time Trigger -->
+    <AdvRem_TimeTriggerInDays>In {0} day(s)</AdvRem_TimeTriggerInDays>
+    <AdvRem_TimeTriggerOnDate>On {0}</AdvRem_TimeTriggerOnDate>
+    <AdvRem_DaysFromNow>Days from now</AdvRem_DaysFromNow>
+    <AdvRem_SpecificDate>Specific date</AdvRem_SpecificDate>
+    <AdvRem_TimeRemaining>Time remaining: {0}</AdvRem_TimeRemaining>
+    <AdvRem_TimeRemainingNow>Now</AdvRem_TimeRemainingNow>
+    
+    <!-- Action Types -->
+    <AdvRem_ActionTypeNotification>Notification</AdvRem_ActionTypeNotification>
+    <AdvRem_ActionTypePause>Pause Game</AdvRem_ActionTypePause>
+    <AdvRem_ActionTypeCamera>Camera Focus</AdvRem_ActionTypeCamera>
+    <AdvRem_ActionTypeChain>Chain Reminder</AdvRem_ActionTypeChain>
+    <AdvRem_ActionTypeSound>Sound Alert</AdvRem_ActionTypeSound>
+    <AdvRem_ActionTypeQuest>Quest Action</AdvRem_ActionTypeQuest>
+    
+    <!-- Notification Action -->
+    <AdvRem_ShowNotification>Show notification</AdvRem_ShowNotification>
+    <AdvRem_ShowNotificationAndPause>Show notification and pause</AdvRem_ShowNotificationAndPause>
+    <AdvRem_PauseGame>Pause game</AdvRem_PauseGame>
+    <AdvRem_CustomTitle>Custom title</AdvRem_CustomTitle>
+    <AdvRem_CustomText>Custom text</AdvRem_CustomText>
     
     <!-- Quest Integration -->
     <AdvRem_QuestDeadlineWarning>Quest "{0}" expires in {1}</AdvRem_QuestDeadlineWarning>
     <AdvRem_QuestPreparation>Quest Preparation</AdvRem_QuestPreparation>
+    <AdvRem_QuestReminder>Quest: {0}</AdvRem_QuestReminder>
+    <AdvRem_QuestPhasePreparation>Preparation</AdvRem_QuestPhasePreparation>
+    <AdvRem_QuestPhaseActive>Active</AdvRem_QuestPhaseActive>
+    <AdvRem_QuestPhaseCompletion>Completion</AdvRem_QuestPhaseCompletion>
+    <AdvRem_QuestPhaseExpired>Expired</AdvRem_QuestPhaseExpired>
     
     <!-- Time System -->
     <AdvRem_QuadrumAprimay>Aprimay</AdvRem_QuadrumAprimay>
     <AdvRem_QuadrumJugust>Jugust</AdvRem_QuadrumJugust>
     <AdvRem_QuadrumSeptober>Septober</AdvRem_QuadrumSeptober>
     <AdvRem_QuadrumDecembary>Decembary</AdvRem_QuadrumDecembary>
+    <AdvRem_Day>Day</AdvRem_Day>
+    <AdvRem_Days>Days</AdvRem_Days>
+    <AdvRem_Hour>Hour</AdvRem_Hour>
+    <AdvRem_Hours>Hours</AdvRem_Hours>
+    <AdvRem_Year>Year</AdvRem_Year>
+    <AdvRem_Years>Years</AdvRem_Years>
     
-    <!-- Messages -->
+    <!-- UI Elements -->
+    <AdvRem_ButtonCreate>Create</AdvRem_ButtonCreate>
+    <AdvRem_ButtonEdit>Edit</AdvRem_ButtonEdit>
+    <AdvRem_ButtonDelete>Delete</AdvRem_ButtonDelete>
+    <AdvRem_ButtonCancel>Cancel</AdvRem_ButtonCancel>
+    <AdvRem_ButtonSave>Save</AdvRem_ButtonSave>
+    <AdvRem_ButtonClose>Close</AdvRem_ButtonClose>
+    <AdvRem_ButtonAdd>Add</AdvRem_ButtonAdd>
+    <AdvRem_ButtonRemove>Remove</AdvRem_ButtonRemove>
+    
+    <!-- Reminder List -->
+    <AdvRem_NoReminders>No reminders</AdvRem_NoReminders>
+    <AdvRem_ActiveReminders>Active Reminders</AdvRem_ActiveReminders>
+    <AdvRem_CompletedReminders>Completed Reminders</AdvRem_CompletedReminders>
+    <AdvRem_ReminderCount>{0} reminder(s)</AdvRem_ReminderCount>
+    <AdvRem_ShowCompleted>Show completed</AdvRem_ShowCompleted>
+    <AdvRem_HideCompleted>Hide completed</AdvRem_HideCompleted>
+    
+    <!-- Status Messages -->
     <AdvRem_ReminderCreated>Reminder "{0}" created</AdvRem_ReminderCreated>
+    <AdvRem_ReminderUpdated>Reminder "{0}" updated</AdvRem_ReminderUpdated>
+    <AdvRem_ReminderDeleted>Reminder "{0}" deleted</AdvRem_ReminderDeleted>
     <AdvRem_ReminderTriggered>Reminder: {0}</AdvRem_ReminderTriggered>
+    <AdvRem_ReminderCompleted>Reminder "{0}" completed</AdvRem_ReminderCompleted>
+    
+    <!-- Error Messages -->
+    <AdvRem_ErrorTitleRequired>Title is required</AdvRem_ErrorTitleRequired>
+    <AdvRem_ErrorInvalidDays>Invalid number of days</AdvRem_ErrorInvalidDays>
+    <AdvRem_ErrorNoTrigger>No trigger specified</AdvRem_ErrorNoTrigger>
+    <AdvRem_ErrorNoActions>No actions specified</AdvRem_ErrorNoActions>
+    <AdvRem_ErrorFailedToCreate>Failed to create reminder</AdvRem_ErrorFailedToCreate>
+    <AdvRem_ErrorFailedToUpdate>Failed to update reminder</AdvRem_ErrorFailedToUpdate>
+    <AdvRem_ErrorFailedToDelete>Failed to delete reminder</AdvRem_ErrorFailedToDelete>
+    
+    <!-- Settings -->
+    <AdvRem_SettingsTitle>Advanced Reminders Settings</AdvRem_SettingsTitle>
+    <AdvRem_EnableAutoProcessing>Enable Auto Processing</AdvRem_EnableAutoProcessing>
+    <AdvRem_EnableAutoProcessingDesc>Automatically process reminder triggers every tick</AdvRem_EnableAutoProcessingDesc>
+    <AdvRem_EnableDebugLogging>Enable Debug Logging</AdvRem_EnableDebugLogging>
+    <AdvRem_EnableDebugLoggingDesc>Enable detailed logging for debugging purposes</AdvRem_EnableDebugLoggingDesc>
+    <AdvRem_CreateReminderHotkey>Create Reminder Hotkey</AdvRem_CreateReminderHotkey>
+    <AdvRem_CreateReminderHotkeyDesc>Hotkey to open the create reminder dialog</AdvRem_CreateReminderHotkeyDesc>
+    <AdvRem_ProcessingInterval>Processing Interval</AdvRem_ProcessingInterval>
+    <AdvRem_ProcessingIntervalDesc>How often to check triggers (in ticks). Lower = more responsive but higher performance cost</AdvRem_ProcessingIntervalDesc>
+    
+    <!-- Hotkeys -->
+    <AdvRem_CreateReminderHotkeyLabel>Create Reminder</AdvRem_CreateReminderHotkeyLabel>
+    <AdvRem_CreateReminderHotkeyDesc>Opens the create reminder dialog</AdvRem_CreateReminderHotkeyDesc>
+    
+    <!-- Main Tab Window -->
+    <AdvRem_RemindersTabTitle>Reminders</AdvRem_RemindersTabTitle>
+    <AdvRem_CreateNewReminder>Create New</AdvRem_CreateNewReminder>
+    <AdvRem_NoActiveReminders>No active reminders. Press 'Create New' or use the Y hotkey to create one.</AdvRem_NoActiveReminders>
+    <AdvRem_TriggerType>Trigger</AdvRem_TriggerType>
+    <AdvRem_NoTriggerSet>No trigger set</AdvRem_NoTriggerSet>
     
 </LanguageData>

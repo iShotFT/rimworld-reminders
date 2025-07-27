@@ -102,6 +102,7 @@
     <MakeDir Directories="$(ModDeployDir)\About" Condition="!Exists('$(ModDeployDir)\About')" />
     <MakeDir Directories="$(ModDeployDir)\Languages" Condition="!Exists('$(ModDeployDir)\Languages')" />
     <MakeDir Directories="$(ModDeployDir)\Defs" Condition="!Exists('$(ModDeployDir)\Defs')" />
+    <MakeDir Directories="$(ModDeployDir)\Textures" Condition="!Exists('$(ModDeployDir)\Textures')" />
     
     <!-- Copy built assembly -->
     <Copy SourceFiles="$(OutputPath)AdvancedReminders.dll" DestinationFolder="$(ModDeployDir)\Assemblies" />
@@ -112,12 +113,14 @@
       <AboutFiles Include="..\..\About\**\*" />
       <LanguageFiles Include="..\..\Languages\**\*" />
       <DefsFiles Include="..\..\Defs\**\*" />
+      <TextureFiles Include="..\..\Textures\**\*" />
       <LoadFoldersFile Include="..\..\loadFolders.xml" />
     </ItemGroup>
     
     <Copy SourceFiles="@(AboutFiles)" DestinationFiles="@(AboutFiles->'$(ModDeployDir)\About\%(RecursiveDir)%(Filename)%(Extension)')" />
     <Copy SourceFiles="@(LanguageFiles)" DestinationFiles="@(LanguageFiles->'$(ModDeployDir)\Languages\%(RecursiveDir)%(Filename)%(Extension)')" />
     <Copy SourceFiles="@(DefsFiles)" DestinationFiles="@(DefsFiles->'$(ModDeployDir)\Defs\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(TextureFiles)" DestinationFiles="@(TextureFiles->'$(ModDeployDir)\Textures\%(RecursiveDir)%(Filename)%(Extension)')" />
     <Copy SourceFiles="@(LoadFoldersFile)" DestinationFiles="@(LoadFoldersFile->'$(ModDeployDir)\%(Filename)%(Extension)')" />
     
     <Message Text="Mod deployed to: $(ModDeployDir)" Importance="high" />
