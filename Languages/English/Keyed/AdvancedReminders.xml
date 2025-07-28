@@ -134,4 +134,22 @@
     <AdvRem_TriggerType>Trigger</AdvRem_TriggerType>
     <AdvRem_NoTriggerSet>No trigger set</AdvRem_NoTriggerSet>
     
+    <!-- Quest Reminder UI -->
+    <AdvRem_ReminderType>Reminder Type:</AdvRem_ReminderType>
+    <AdvRem_ReminderTypeTime>Time-based Reminder</AdvRem_ReminderTypeTime>
+    <AdvRem_ReminderTypeQuest>Quest Deadline Reminder</AdvRem_ReminderTypeQuest>
+    <AdvRem_SelectQuest>Select Quest:</AdvRem_SelectQuest>
+    <AdvRem_SelectQuestPrompt>Click to select quest...</AdvRem_SelectQuestPrompt>
+    <AdvRem_RemindMe>Remind me:</AdvRem_RemindMe>
+    <AdvRem_BeforeQuestExpires>before quest expires</AdvRem_BeforeQuestExpires>
+    <AdvRem_NoQuestsWithDeadlines>No available quests with deadlines found</AdvRem_NoQuestsWithDeadlines>
+    <AdvRem_QuestExpiresIn>{0} (expires in {1}h)</AdvRem_QuestExpiresIn>
+    <AdvRem_PleaseSelectQuest>Please select a quest</AdvRem_PleaseSelectQuest>
+    <AdvRem_HoursBeforeExpiryRequired>Hours before expiry must be at least 1</AdvRem_HoursBeforeExpiryRequired>
+    <AdvRem_ReminderDetails>Reminder Details</AdvRem_ReminderDetails>
+    <AdvRem_Timing>Timing</AdvRem_Timing>
+    <AdvRem_FromNow>from now</AdvRem_FromNow>
+    <AdvRem_Priority>Priority</AdvRem_Priority>
+    <AdvRem_Options>Options</AdvRem_Options>
+    
 </LanguageData>

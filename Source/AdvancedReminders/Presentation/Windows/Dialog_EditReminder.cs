@@ -13,15 +13,19 @@ using AdvancedReminders.Presentation.Components;
 
 namespace AdvancedReminders.Presentation.Windows
 {
-    public class Dialog_CreateReminder : Window
+    public class Dialog_EditReminder : Window
     {
+        private Reminder reminder;
         private ReminderFormComponent formComponent;
         
         public override Vector2 InitialSize => new Vector2(750f, 650f);
         
-        public Dialog_CreateReminder()
+        public Dialog_EditReminder(Reminder reminderToEdit)
         {
+            this.reminder = reminderToEdit;
             formComponent = new ReminderFormComponent();
+            formComponent.IsEditMode = true;
+            formComponent.InitializeFromReminder(reminder);
             
             forcePause = true;
             doCloseX = true;
@@ -34,6 +38,8 @@ namespace AdvancedReminders.Presentation.Windows
         {
             // Calculate section heights dynamically
             var headerHeight = CalculateHeaderHeight(inRect.width);
+            var inputSectionHeight = CalculateInputSectionHeight(inRect.width);
+            var previewSectionHeight = CalculatePreviewSectionHeight(inRect.width);
             var buttonHeight = 45f;
             
             var spacing = 10f;
@@ -64,7 +70,7 @@ namespace AdvancedReminders.Presentation.Windows
             DrawActionButtons(buttonRect);
         }
         
-        private void CreateReminder()
+        private void UpdateReminder()
         {
             // Validate using form component
             if (!formComponent.ValidateForm(out string errorMessage))
@@ -75,51 +81,47 @@ namespace AdvancedReminders.Presentation.Windows
             
             try
             {
-                Reminder reminder;
+                // Update the reminder
+                reminder.Title = formComponent.ReminderTitle;
+                reminder.Description = formComponent.ReminderDescription;
+                reminder.Severity = formComponent.Severity;
                 
+                // Update trigger based on reminder type
                 if (formComponent.ReminderType == ReminderType.Quest)
                 {
-                    // Create quest reminder
-                    var questReminder = new QuestReminder(formComponent.SelectedQuest);
-                    questReminder.Title = formComponent.ReminderTitle;
-                    questReminder.Description = formComponent.ReminderDescription;
-                    questReminder.Severity = formComponent.Severity;
-                    
                     // Create quest deadline trigger
                     var questTrigger = new QuestDeadlineTrigger(formComponent.SelectedQuest.id, formComponent.QuestHoursBeforeExpiry);
-                    questReminder.Trigger = questTrigger;
-                    
-                    reminder = questReminder;
+                    reminder.Trigger = questTrigger;
                 }
                 else
                 {
-                    // Create regular reminder
-                    reminder = new Reminder(formComponent.ReminderTitle, formComponent.ReminderDescription, formComponent.Severity);
-                    
-                    // Create time trigger based on selected time unit
+                    // Create time trigger
                     var timeTrigger = new TimeTrigger();
                     int hours = formComponent.TimeUnit == ReminderFormComponent.TimeUnitType.Days ? formComponent.TimeValue * 24 : formComponent.TimeValue;
                     timeTrigger.SetHoursFromNow(hours);
                     reminder.Trigger = timeTrigger;
                 }
                 
-                // Create notification action
+                // Update notification action
+                reminder.Actions.Clear();
                 var notificationAction = new NotificationAction(formComponent.PauseGame);
                 reminder.Actions.Add(notificationAction);
                 
-                // Add to manager
-                ReminderManager.Instance?.AddReminder(reminder);
+                // If the reminder was completed, reactivate it
+                if (!reminder.IsActive)
+                {
+                    reminder.IsActive = true;
+                }
                 
                 // Show success message
-                Messages.Message(LocalizationHelper.FormatReminderMessage(LocalizationKeys.ReminderCreated, formComponent.ReminderTitle), 
-                    MessageTypeDefOf.PositiveEvent);
+                Messages.Message($"Reminder '{formComponent.ReminderTitle}' has been updated", MessageTypeDefOf.PositiveEvent);
                 
                 Close();
             }
             catch (System.Exception ex)
             {
-                Log.Error($"[AdvancedReminders] Failed to create reminder: {ex}");
-                Messages.Message(LocalizationKeys.ErrorFailedToCreate.Translate(), MessageTypeDefOf.RejectInput);
+                Log.Error($"[AdvancedReminders] Failed to update reminder: {ex}");
+                Messages.Message("Failed to update reminder", MessageTypeDefOf.RejectInput);
             }
         }
         
@@ -133,6 +135,16 @@ namespace AdvancedReminders.Presentation.Windows
             return height;
         }
         
+        private float CalculateInputSectionHeight(float width)
+        {
+            // This is dynamic based on content, but we'll calculate in the actual drawing
+            return 300f; // Rough estimate
+        }
+        
+        private float CalculatePreviewSectionHeight(float width)
+        {
+            return 300f; // Rough estimate
+        }
         
         private void DrawHeaderSection(Rect rect)
         {
@@ -147,14 +159,14 @@ namespace AdvancedReminders.Presentation.Windows
             Text.Font = GameFont.Medium;
             var titleRect = new Rect(innerRect.x, currentY, innerRect.width, Text.LineHeight);
             Text.Anchor = TextAnchor.MiddleCenter;
-            Widgets.Label(titleRect, LocalizationKeys.CreateReminderTitle.Translate());
+            Widgets.Label(titleRect, "Edit Reminder");
             currentY += Text.LineHeight + 5f;
             
             // Subtitle
             Text.Font = GameFont.Small;
             var subtitleRect = new Rect(innerRect.x, currentY, innerRect.width, Text.LineHeight);
             GUI.color = Color.gray;
-            Widgets.Label(subtitleRect, "Configure your reminder settings below");
+            Widgets.Label(subtitleRect, "Modify your reminder settings below");
             GUI.color = Color.white;
             
             Text.Anchor = TextAnchor.UpperLeft;
@@ -169,7 +181,6 @@ namespace AdvancedReminders.Presentation.Windows
             var innerRect = rect.ContractedBy(15f);
             formComponent.DrawForm(innerRect);
         }
-        
         
         private void DrawPreviewSection(Rect rect)
         {
@@ -187,6 +198,15 @@ namespace AdvancedReminders.Presentation.Windows
             Widgets.Label(sectionTitleRect, "Preview");
             GUI.color = Color.white;
             currentY += Text.LineHeight + 12f;
+            
+            // Show original reminder info
+            Text.Font = GameFont.Tiny;
+            GUI.color = Color.gray;
+            var originalInfoRect = new Rect(innerRect.x, currentY, innerRect.width, Text.LineHeight);
+            Widgets.Label(originalInfoRect, $"Original: {reminder.Title}");
+            GUI.color = Color.white;
+            currentY += Text.LineHeight + 8f;
+            Text.Font = GameFont.Small;
             
             // Preview the reminder as it would appear
             if (!string.IsNullOrWhiteSpace(formComponent.ReminderTitle))
@@ -261,16 +281,16 @@ namespace AdvancedReminders.Presentation.Windows
             var totalButtonWidth = (buttonWidth * 2) + spacing;
             var startX = rect.x + (rect.width - totalButtonWidth) / 2f;
             
-            // Create button
-            var createRect = new Rect(startX, rect.y + 5f, buttonWidth, 35f);
-            var canCreate = formComponent.ValidateForm(out _);
+            // Update button
+            var updateRect = new Rect(startX, rect.y + 5f, buttonWidth, 35f);
+            var canUpdate = formComponent.ValidateForm(out _);
             
-            GUI.enabled = canCreate;
-            var createColor = canCreate ? ColoredText.FactionColor_Ally : Color.gray;
-            GUI.color = createColor;
-            if (Widgets.ButtonText(createRect, LocalizationKeys.ButtonCreate.Translate(), drawBackground: true))
+            GUI.enabled = canUpdate;
+            var updateColor = canUpdate ? ColoredText.FactionColor_Ally : Color.gray;
+            GUI.color = updateColor;
+            if (Widgets.ButtonText(updateRect, "Update", drawBackground: true))
             {
-                CreateReminder();
+                UpdateReminder();
             }
             GUI.color = Color.white;
             GUI.enabled = true;
@@ -295,6 +315,5 @@ namespace AdvancedReminders.Presentation.Windows
                 _ => Color.white
             };
         }
-        
     }
 }

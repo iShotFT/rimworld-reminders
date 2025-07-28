@@ -132,5 +132,23 @@ namespace AdvancedReminders.Infrastructure.Localization
         // Hotkeys
         public const string CreateReminderHotkeyLabel = "AdvRem_CreateReminderHotkeyLabel";
         public const string CreateReminderHotkeyDesc2 = "AdvRem_CreateReminderHotkeyDesc";
+        
+        // Quest Reminder UI
+        public const string ReminderType = "AdvRem_ReminderType";
+        public const string ReminderTypeTime = "AdvRem_ReminderTypeTime";
+        public const string ReminderTypeQuest = "AdvRem_ReminderTypeQuest";
+        public const string SelectQuest = "AdvRem_SelectQuest";
+        public const string SelectQuestPrompt = "AdvRem_SelectQuestPrompt";
+        public const string RemindMe = "AdvRem_RemindMe";
+        public const string BeforeQuestExpires = "AdvRem_BeforeQuestExpires";
+        public const string NoQuestsWithDeadlines = "AdvRem_NoQuestsWithDeadlines";
+        public const string QuestExpiresIn = "AdvRem_QuestExpiresIn";
+        public const string PleaseSelectQuest = "AdvRem_PleaseSelectQuest";
+        public const string HoursBeforeExpiryRequired = "AdvRem_HoursBeforeExpiryRequired";
+        public const string ReminderDetails = "AdvRem_ReminderDetails";
+        public const string Timing = "AdvRem_Timing";
+        public const string FromNow = "AdvRem_FromNow";
+        public const string Priority = "AdvRem_Priority";
+        public const string Options = "AdvRem_Options";
     }
 }

@@ -9,6 +9,7 @@ using AdvancedReminders.Infrastructure.Localization;
 using AdvancedReminders.Presentation.Windows;
 using AdvancedReminders.Domain.Triggers;
 using AdvancedReminders.Core.Enums;
+using AdvancedReminders.Presentation.Components;
 
 namespace AdvancedReminders.Presentation.MainTab
 {
@@ -18,8 +19,13 @@ namespace AdvancedReminders.Presentation.MainTab
         private List<Reminder> displayedReminders = new List<Reminder>();
         private bool showCompleted = true;
         private SortMode currentSort = SortMode.TriggerTime;
+        private CalendarComponent calendar;
         
-        public override Vector2 RequestedTabSize => new Vector2(800f, 600f);
+        // Layout constants
+        private const float CALENDAR_WIDTH = 400f;
+        private const float PANEL_SPACING = 15f;
+        
+        public override Vector2 RequestedTabSize => new Vector2(1200f, 600f); // Wider to accommodate calendar
         
         public enum SortMode
         {
@@ -33,19 +39,90 @@ namespace AdvancedReminders.Presentation.MainTab
         public MainTabWindow_Reminders()
         {
             RefreshRemindersList();
+            InitializeCalendar();
+        }
+        
+        private void InitializeCalendar()
+        {
+            calendar = new CalendarComponent();
+            calendar.OnDaySelected += OnCalendarDaySelected;
+            calendar.OnDayDoubleClicked += OnCalendarDayDoubleClicked;
         }
 
         public override void DoWindowContents(Rect inRect)
         {
             RefreshRemindersList();
             
-            // Calculate header height dynamically
-            var headerHeight = CalculateHeaderHeight(inRect.width);
-            var headerRect = new Rect(inRect.x, inRect.y, inRect.width, headerHeight);
-            var contentRect = new Rect(inRect.x, inRect.y + headerHeight + 5f, inRect.width, inRect.height - headerHeight - 5f);
+            // Split the window into left (reminders) and right (calendar) panels with proper spacing
+            var remindersWidth = inRect.width - CALENDAR_WIDTH - PANEL_SPACING;
+            var remindersRect = new Rect(inRect.x, inRect.y, remindersWidth, inRect.height);
+            var calendarRect = new Rect(remindersRect.xMax + PANEL_SPACING, inRect.y, CALENDAR_WIDTH, inRect.height);
+            
+            // Draw separator line between panels (positioned better)
+            var separatorRect = new Rect(remindersRect.xMax + (PANEL_SPACING / 2) - 1f, inRect.y + 20f, 2f, inRect.height - 40f);
+            GUI.color = new Color(0.5f, 0.5f, 0.5f, 0.8f);
+            GUI.DrawTexture(separatorRect, BaseContent.WhiteTex);
+            GUI.color = Color.white;
+            
+            // Draw reminders panel
+            DrawRemindersPanel(remindersRect);
+            
+            // Draw calendar panel
+            DrawCalendarPanel(calendarRect);
+        }
+        
+        private void DrawRemindersPanel(Rect rect)
+        {
+            // Calculate header height for reminders panel
+            var headerHeight = CalculateHeaderHeight(rect.width);
+            var headerRect = new Rect(rect.x, rect.y, rect.width, headerHeight);
+            var contentRect = new Rect(rect.x, rect.y + headerHeight + 5f, rect.width, rect.height - headerHeight - 5f);
             
             DrawHeader(headerRect);
             DrawContent(contentRect);
+        }
+        
+        private void DrawCalendarPanel(Rect rect)
+        {
+            // Calendar panel background
+            Widgets.DrawBoxSolid(rect, new Color(0.1f, 0.1f, 0.1f, 0.4f));
+            Widgets.DrawBox(rect);
+            
+            var innerRect = rect.ContractedBy(10f);
+            
+            // Calendar title
+            Text.Font = GameFont.Medium;
+            var titleRect = new Rect(innerRect.x, innerRect.y, innerRect.width, Text.LineHeight);
+            Widgets.Label(titleRect, "Reminders Calendar");
+            
+            // Calendar component
+            var calendarAreaRect = new Rect(innerRect.x, innerRect.y + Text.LineHeight + 10f, 
+                                          innerRect.width, innerRect.height - Text.LineHeight - 10f);
+            
+            if (calendar != null)
+            {
+                calendar.DrawCalendar(calendarAreaRect);
+            }
+            
+            Text.Font = GameFont.Small;
+        }
+        
+        private void OnCalendarDaySelected(int dayOfYear)
+        {
+            // Handle calendar day selection - could filter reminders by date
+            Log.Message($"[AdvancedReminders] Calendar day selected: {dayOfYear + 1}");
+        }
+        
+        private void OnCalendarDayDoubleClicked(int dayOfYear)
+        {
+            // Handle calendar day double-click - could open create reminder dialog for that day
+            var tick = calendar.GetTickForDay(dayOfYear);
+            Log.Message($"[AdvancedReminders] Calendar day double-clicked: {dayOfYear + 1}, tick: {tick}");
+            
+            // Open create reminder dialog with pre-selected time
+            var dialog = new Dialog_CreateReminder();
+            // TODO: Pre-configure dialog for the selected day
+            Find.WindowStack.Add(dialog);
         }
         
         private float CalculateHeaderHeight(float width)
@@ -56,7 +133,7 @@ namespace AdvancedReminders.Presentation.MainTab
             Text.Font = GameFont.Medium;
             height += Text.LineHeight + 5f;
             
-            // Stats height
+            // Stats height (separate line again)
             Text.Font = GameFont.Small;
             height += Text.LineHeight + 5f;
             
@@ -261,8 +338,10 @@ namespace AdvancedReminders.Presentation.MainTab
             
             Text.Font = GameFont.Small;
             
-            // Ensure minimum height for buttons
-            return Mathf.Max(height, 70f);
+            // Ensure minimum height for buttons - quest reminders need more space for 3 buttons
+            bool isQuestReminder = reminder.Trigger is QuestDeadlineTrigger;
+            float minButtonHeight = isQuestReminder ? 95f : 70f; // 3 buttons vs 2 buttons
+            return Mathf.Max(height, minButtonHeight);
         }
         
         private IEnumerable<Reminder> GetSortedReminders(List<Reminder> reminders)
@@ -339,20 +418,66 @@ namespace AdvancedReminders.Presentation.MainTab
             var buttonWidth = 60f;
             var buttonHeight = 25f;
             var buttonY = innerRect.y + 5f;
+            var buttonSpacing = 5f;
             
-            var editButtonRect = new Rect(innerRect.xMax - buttonWidth, buttonY, buttonWidth, buttonHeight);
-            if (Widgets.ButtonText(editButtonRect, "Edit"))
-            {
-                Messages.Message("Edit functionality coming soon", MessageTypeDefOf.NeutralEvent);
-            }
+            // Check if this is a quest reminder to determine button layout
+            bool isQuestReminder = reminder.Trigger is QuestDeadlineTrigger;
             
-            var deleteButtonRect = new Rect(innerRect.xMax - buttonWidth, buttonY + 30f, buttonWidth, buttonHeight);
-            if (Widgets.ButtonText(deleteButtonRect, "Delete"))
+            if (isQuestReminder)
             {
-                if (ReminderManager.Instance != null)
+                // Three buttons for quest reminders: Edit, Delete, Quest
+                var questButtonRect = new Rect(innerRect.xMax - buttonWidth, buttonY, buttonWidth, buttonHeight);
+                if (Widgets.ButtonText(questButtonRect, "Quest"))
                 {
-                    ReminderManager.Instance.RemoveReminder(reminder.Id);
-                    RefreshRemindersList();
+                    var questTrigger = (QuestDeadlineTrigger)reminder.Trigger;
+                    var quest = questTrigger.GetAssociatedQuest();
+                    if (quest != null)
+                    {
+                        // Open the quest details window
+                        Find.MainTabsRoot.SetCurrentTab(MainButtonDefOf.Quests);
+                        ((MainTabWindow_Quests)MainButtonDefOf.Quests.TabWindow).Select(quest);
+                    }
+                    else
+                    {
+                        Messages.Message("Quest no longer available", MessageTypeDefOf.RejectInput);
+                    }
+                }
+                
+                var editButtonRect = new Rect(innerRect.xMax - buttonWidth, buttonY + buttonHeight + buttonSpacing, buttonWidth, buttonHeight);
+                if (Widgets.ButtonText(editButtonRect, "Edit"))
+                {
+                    var dialog = new Dialog_EditReminder(reminder);
+                    Find.WindowStack.Add(dialog);
+                }
+                
+                var deleteButtonRect = new Rect(innerRect.xMax - buttonWidth, buttonY + (buttonHeight + buttonSpacing) * 2, buttonWidth, buttonHeight);
+                if (Widgets.ButtonText(deleteButtonRect, "Delete"))
+                {
+                    if (ReminderManager.Instance != null)
+                    {
+                        ReminderManager.Instance.RemoveReminder(reminder.Id);
+                        RefreshRemindersList();
+                    }
+                }
+            }
+            else
+            {
+                // Two buttons for regular reminders: Edit, Delete
+                var editButtonRect = new Rect(innerRect.xMax - buttonWidth, buttonY, buttonWidth, buttonHeight);
+                if (Widgets.ButtonText(editButtonRect, "Edit"))
+                {
+                    var dialog = new Dialog_EditReminder(reminder);
+                    Find.WindowStack.Add(dialog);
+                }
+                
+                var deleteButtonRect = new Rect(innerRect.xMax - buttonWidth, buttonY + buttonHeight + buttonSpacing, buttonWidth, buttonHeight);
+                if (Widgets.ButtonText(deleteButtonRect, "Delete"))
+                {
+                    if (ReminderManager.Instance != null)
+                    {
+                        ReminderManager.Instance.RemoveReminder(reminder.Id);
+                        RefreshRemindersList();
+                    }
                 }
             }
             
@@ -367,11 +492,17 @@ namespace AdvancedReminders.Presentation.MainTab
                 
             if (reminder.Trigger is TimeTrigger timeTrigger)
             {
-                // Show when it will trigger, not the original description
+                // Show when it will trigger with time and countdown
                 var firstMap = Find.Maps.FirstOrDefault();
                 var tile = firstMap?.Tile ?? 0;
-                var targetDate = GenDate.DateReadoutStringAt(GenDate.TickGameToAbs(timeTrigger.TargetTick), Find.WorldGrid.LongLatOf(tile));
-                return $"Triggers on: {targetDate}";
+                var targetDate = GenDate.DateReadoutStringAt(timeTrigger.TargetTick, Find.WorldGrid.LongLatOf(tile));
+                var timeRemaining = timeTrigger.TimeRemainingDescription;
+                return $"Triggers on: {targetDate} (in {timeRemaining})";
+            }
+            
+            if (reminder.Trigger is QuestDeadlineTrigger questTrigger)
+            {
+                return questTrigger.DetailedTriggerDescription;
             }
             
             return $"Trigger: {reminder.Trigger.GetType().Name}";
@@ -385,6 +516,12 @@ namespace AdvancedReminders.Presentation.MainTab
             if (reminder.Trigger is TimeTrigger timeTrigger)
             {
                 var remaining = timeTrigger.TimeRemainingDescription;
+                return $"Time remaining: {remaining}";
+            }
+            
+            if (reminder.Trigger is QuestDeadlineTrigger questTrigger)
+            {
+                var remaining = questTrigger.TimeRemainingDescription;
                 return $"Time remaining: {remaining}";
             }
             
@@ -495,6 +632,9 @@ namespace AdvancedReminders.Presentation.MainTab
                     displayedReminders.AddRange(filteredReminders);
                 }
             }
+            
+            // Also refresh calendar when reminders change
+            calendar?.ForceRefresh();
         }
 
         public override void PostOpen()

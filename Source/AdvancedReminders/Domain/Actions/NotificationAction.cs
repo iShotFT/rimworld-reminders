@@ -1,5 +1,6 @@
 using AdvancedReminders.Core.Enums;
 using AdvancedReminders.Core.Models;
+using AdvancedReminders.Domain.Triggers;
 using RimWorld;
 using Verse;
 
@@ -45,8 +46,26 @@ namespace AdvancedReminders.Domain.Actions
                 // Determine letter type based on severity if not explicitly set
                 var letterDef = DetermineLetterType(reminder.Severity);
                 
-                // Create and send the letter
-                var letter = LetterMaker.MakeLetter(title, text, letterDef);
+                // Check if this is a quest reminder to add quest link
+                Quest relatedQuest = null;
+                if (reminder.Trigger is QuestDeadlineTrigger questTrigger)
+                {
+                    relatedQuest = questTrigger.GetAssociatedQuest();
+                }
+                
+                // Create and send the letter with quest reference if applicable
+                ChoiceLetter letter;
+                if (relatedQuest != null)
+                {
+                    // Create letter with quest link - this automatically adds the "View Quest" button
+                    letter = LetterMaker.MakeLetter(title, text, letterDef, relatedFaction: null, quest: relatedQuest);
+                }
+                else
+                {
+                    // Create regular letter without quest link
+                    letter = LetterMaker.MakeLetter(title, text, letterDef);
+                }
+                
                 Find.LetterStack.ReceiveLetter(letter);
                 
                 // Pause game if requested or if severity is critical/urgent
@@ -55,7 +74,8 @@ namespace AdvancedReminders.Domain.Actions
                     Find.TickManager.Pause();
                 }
                 
-                Log.Message($"[AdvancedReminders] Notification sent: {title}");
+                Log.Message($"[AdvancedReminders] Notification sent: {title}" + 
+                           (relatedQuest != null ? $" (with quest link: {relatedQuest.name})" : ""));
             }
             catch (System.Exception ex)
             {
