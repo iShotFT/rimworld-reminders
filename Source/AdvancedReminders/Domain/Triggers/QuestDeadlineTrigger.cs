@@ -101,7 +101,7 @@ namespace AdvancedReminders.Domain.Triggers
         
         public override void Reset()
         {
-            base.Reset();
+            IsTriggered = false;
             CalculateTriggerTick();
         }
         

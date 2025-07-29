@@ -4,7 +4,7 @@ using Verse;
 
 namespace AdvancedReminders.Core.Models
 {
-    public abstract class ReminderAction : IExposable, IReminderAction
+    public abstract class ReminderAction : IReminderAction
     {
         public abstract ActionType Type { get; }
         public abstract string Description { get; }
@@ -13,7 +13,7 @@ namespace AdvancedReminders.Core.Models
         
         public virtual void ExposeData()
         {
-            // Base implementation for serialization
+            // Base action serialization - override in derived classes
         }
     }
 }

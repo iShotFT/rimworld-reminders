@@ -110,7 +110,7 @@ namespace AdvancedReminders.Domain.Triggers
         
         public override void Reset()
         {
-            base.Reset();
+            IsTriggered = false;
             
             // If this is a relative trigger, recalculate the target tick from current time
             if (IsRelativeTime)

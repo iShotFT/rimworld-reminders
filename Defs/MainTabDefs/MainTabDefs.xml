@@ -6,10 +6,10 @@
         <defName>AdvRem_Reminders</defName>
         <label>Reminders</label>
         <description>Manage your reminders and tasks</description>
-        <tabWindowClass>AdvancedReminders.Presentation.MainTab.MainTabWindow_Reminders</tabWindowClass>
+        <tabWindowClass>AdvancedReminders.Presentation.UI.MainTab.ModernMainTabWindow</tabWindowClass>
         <order>50</order>
         <!-- Removed iconPath so text label is shown instead of icon -->
-        <hotKey>AdvRem_OpenRemindersTab</hotKey>
+        <!-- Hotkey removed per user feedback - access through main tab menu -->
         <closesWorldView>false</closesWorldView>
         <canBeTutorDenied>false</canBeTutorDenied>
     </MainButtonDef>

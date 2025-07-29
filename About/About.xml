@@ -24,14 +24,11 @@
         <li>Ludeon.RimWorld.Biotech</li>
         <li>Ludeon.RimWorld.Anomaly</li>
     </loadAfter>
+    <url>https://github.com/iShotFT/rimworld-reminders</url>
 </ModMetaData>
 <!--
-When adding a preview photo
+Image files for mod:
 
-Must be called Preview.png
-
-Should be
-640x360
-
-Must Not Be Larger then 1MB in size
+ModIcon.png - Mod list icon (32x32+, simple design recommended)
+Preview.png - Steam Workshop preview (640x360, must be under 1MB)
  -->

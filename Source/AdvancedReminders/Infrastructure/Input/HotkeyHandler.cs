@@ -1,7 +1,7 @@
 using UnityEngine;
 using Verse;
 using RimWorld;
-using AdvancedReminders.Presentation.Windows;
+using AdvancedReminders.Presentation.UI.Dialogs;
 
 namespace AdvancedReminders.Infrastructure.Input
 {
@@ -9,26 +9,16 @@ namespace AdvancedReminders.Infrastructure.Input
     {
         public static void ProcessHotkeys()
         {
-            // Check for create reminder hotkey
-            if (KeyBindingDefOf.AdvRem_CreateReminder.JustPressed)
-            {
-                OnCreateReminderPressed();
-            }
-            
-            // Check for test reminder hotkey (dev mode only)
-            if (Prefs.DevMode && KeyBindingDefOf.AdvRem_CreateTestReminder.JustPressed)
-            {
-                OnCreateTestReminderPressed();
-            }
+            // Hotkeys disabled per user feedback - access through main tab menu
+            return;
         }
         
         private static void OnCreateReminderPressed()
         {
             try
             {
-                // For now, just create a simple test reminder
-                // Later this will open the creation dialog
-                var dialog = new Dialog_CreateReminder();
+                // Open the modern create reminder dialog
+                var dialog = new ModernCreateReminderDialog();
                 Find.WindowStack.Add(dialog);
                 
                 Log.Message("[AdvancedReminders] Create reminder hotkey pressed");

@@ -4,7 +4,8 @@ namespace AdvancedReminders.Core.Enums
     {
         Preparation,
         Active,
-        Completion,
-        Expired
+        NearDeadline,
+        Completed,
+        Failed
     }
 }

@@ -2,7 +2,7 @@ using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using AdvancedReminders.Presentation.Windows;
+using AdvancedReminders.Presentation.UI.Dialogs;
 using AdvancedReminders.Core.Enums;
 
 namespace AdvancedReminders.Infrastructure.Patches
@@ -43,28 +43,8 @@ namespace AdvancedReminders.Infrastructure.Patches
                 // Use default button styling
                 if (Widgets.ButtonText(buttonRect, "Set Reminder"))
                 {
-                    // Open reminder creation dialog with quest pre-selected
-                    var dialog = new Dialog_CreateReminder();
-                    
-                    // Pre-configure for quest reminder
-                    var formComponent = AccessTools.Field(typeof(Dialog_CreateReminder), "formComponent").GetValue(dialog);
-                    if (formComponent != null)
-                    {
-                        // Set reminder type to Quest
-                        AccessTools.Property(formComponent.GetType(), "ReminderType").SetValue(formComponent, ReminderType.Quest);
-                        
-                        // Set selected quest
-                        AccessTools.Property(formComponent.GetType(), "SelectedQuest").SetValue(formComponent, selectedQuest);
-                        
-                        // Set default title and description
-                        AccessTools.Property(formComponent.GetType(), "ReminderTitle").SetValue(formComponent, $"Quest Deadline: {selectedQuest.name}");
-                        AccessTools.Property(formComponent.GetType(), "ReminderDescription").SetValue(formComponent, $"Remember to accept quest '{selectedQuest.name}' before it expires!");
-                        
-                        // Set default timing - 1 day before expiration
-                        var hoursUntilExpiry = selectedQuest.TicksUntilExpiry / (float)GenDate.TicksPerHour;
-                        var defaultHours = Mathf.Max(1, Mathf.Min(24, Mathf.RoundToInt(hoursUntilExpiry * 0.1f))); // 10% of remaining time, capped between 1-24 hours
-                        AccessTools.Property(formComponent.GetType(), "QuestHoursBeforeExpiry").SetValue(formComponent, defaultHours);
-                    }
+                    // Open the modern reminder creation dialog with pre-selected quest
+                    var dialog = new ModernCreateReminderDialog(selectedQuest);
                     
                     Find.WindowStack.Add(dialog);
                 }

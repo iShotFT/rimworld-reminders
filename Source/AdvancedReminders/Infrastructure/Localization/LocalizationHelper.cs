@@ -71,11 +71,9 @@ namespace AdvancedReminders.Infrastructure.Localization
             return actionType switch
             {
                 ActionType.Notification => LocalizationKeys.ActionTypeNotification.Translate(),
-                ActionType.Pause => LocalizationKeys.ActionTypePause.Translate(),
-                ActionType.Camera => "Camera Focus",
-                ActionType.Chain => "Chain Action", 
                 ActionType.Sound => "Sound Alert",
-                ActionType.Quest => "Quest Action",
+                ActionType.Message => "Message Action",
+                ActionType.PauseGame => "Pause Game",
                 _ => actionType.ToString()
             };
         }
@@ -89,8 +87,9 @@ namespace AdvancedReminders.Infrastructure.Localization
             {
                 QuestPhase.Preparation => LocalizationKeys.QuestPhasePreparation.Translate(),
                 QuestPhase.Active => LocalizationKeys.QuestPhaseActive.Translate(),
-                QuestPhase.Completion => LocalizationKeys.QuestPhaseCompletion.Translate(),
-                QuestPhase.Expired => LocalizationKeys.QuestPhaseExpired.Translate(),
+                QuestPhase.NearDeadline => "Near Deadline",
+                QuestPhase.Completed => "Completed",
+                QuestPhase.Failed => "Failed",
                 _ => phase.ToString()
             };
         }
